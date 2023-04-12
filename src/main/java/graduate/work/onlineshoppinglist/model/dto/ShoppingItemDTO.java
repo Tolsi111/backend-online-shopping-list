@@ -12,5 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ShoppingItemDTO {
+
     private int amount;
+    private Long shoppingListId;
+    private Long recipeId;
+    private Long itemId;
 }

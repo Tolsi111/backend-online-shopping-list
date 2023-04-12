@@ -18,6 +18,7 @@ public class ErrorMapping {
         map.put(ErrorCodes.BAD_REQUEST_INVALID_PARAMETER_FORMAT, new ErrorDetails(ErrorCodes.BAD_REQUEST_INVALID_PARAMETER_FORMAT, "Bad request - Format of a parameter is not valid"));
         map.put(ErrorCodes.BAD_REQUEST_MISSING_REQUEST_PARAMETER, new ErrorDetails(ErrorCodes.BAD_REQUEST_MISSING_REQUEST_PARAMETER, "Bad request - Missing request parameters: "));
         map.put(ErrorCodes.BAD_REQUEST_INVALID_CATEGORY, new ErrorDetails(ErrorCodes.BAD_REQUEST_INVALID_CATEGORY, "Bad request - Provided category is not valid"));
+        map.put(ErrorCodes.BAD_REQUEST_NO_LIST_PROVIDED, new ErrorDetails(ErrorCodes.BAD_REQUEST_NO_LIST_PROVIDED, "Bad request - Neither recipe nor shopping list was provided for the shopping item"));
     }
 
     private ErrorMapping() {

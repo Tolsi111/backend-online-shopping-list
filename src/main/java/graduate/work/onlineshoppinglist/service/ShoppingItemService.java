@@ -7,7 +7,10 @@ import java.util.Optional;
 
 import graduate.work.onlineshoppinglist.exceptions.error_handling.error.ErrorCodes;
 import graduate.work.onlineshoppinglist.exceptions.error_handling.response.CustomErrorResponse;
+import graduate.work.onlineshoppinglist.model.Item;
+import graduate.work.onlineshoppinglist.model.Recipe;
 import graduate.work.onlineshoppinglist.model.ShoppingItem;
+import graduate.work.onlineshoppinglist.model.ShoppingList;
 import graduate.work.onlineshoppinglist.model.dto.ShoppingItemDTO;
 import graduate.work.onlineshoppinglist.repository.ShoppingItemRepository;
 import lombok.AllArgsConstructor;
@@ -17,18 +20,41 @@ import lombok.AllArgsConstructor;
 public class ShoppingItemService {
 
     private ShoppingItemRepository shoppingItemRepository;
+    private ItemService itemService;
+    private ShoppingListService shoppingListService;
+    private RecipeService recipeService;
 
-//    public ShoppingItem saveShoppingItem(ShoppingItemDTO theItem) {
-//        ShoppingItem newItem = new ShoppingItem(0, theItem.getName(), theItem.getCategory(), theItem.getPrice(), theItem.getAmount(), null);
-//        try {
-//            return shoppingItemRepository.save(newItem);
-//        } catch (Exception e) {
-//            throw new CustomErrorResponse(ErrorCodes.INTERNAL_SERVER_ERROR_WHILE_CREATING_RESOURCE);
-//        }
-//    }
+    public ShoppingItem saveShoppingItem(ShoppingItemDTO shoppingItemDTO) {
+        Item theItem = this.itemService.getItemById(shoppingItemDTO.getItemId());
+        ShoppingList shoppingList = new ShoppingList();
+        Recipe recipe = new Recipe();
+        if (shoppingItemDTO.getShoppingListId() == null && shoppingItemDTO.getRecipeId() == null) {
+            throw new CustomErrorResponse(ErrorCodes.BAD_REQUEST_NO_LIST_PROVIDED);
+        } else if (shoppingItemDTO.getShoppingListId() != null) {
+            shoppingList = shoppingListService.getShoppingList(shoppingItemDTO.getShoppingListId());
+            recipe = null;
+        } else if (shoppingItemDTO.getRecipeId() != null) {
+            recipe = recipeService.getRecipe(shoppingItemDTO.getRecipeId());
+            shoppingList = null;
+        }
+        ShoppingItem newItem = new ShoppingItem(0, shoppingItemDTO.getAmount(), shoppingList, recipe, theItem);
+        try {
+            return shoppingItemRepository.save(newItem);
+        } catch (Exception e) {
+            throw new CustomErrorResponse(ErrorCodes.INTERNAL_SERVER_ERROR_WHILE_CREATING_RESOURCE);
+        }
+    }
 
-    public List<ShoppingItem> getShoppingItems() {
-        return shoppingItemRepository.findAll();
+    public List<ShoppingItem> getShoppingItemsByRecipeId(long itemId) {
+        Recipe recipe = this.recipeService.getRecipe(itemId);
+        return recipe.getIngredients();
+    }
+
+    public ShoppingItem updateShoppingItemAmount(long itemId,
+                                                 int amount) {
+        ShoppingItem oldItem = this.getShoppingItem(itemId);
+        oldItem.setAmount(amount);
+        return this.shoppingItemRepository.save(oldItem);
     }
 
     public ShoppingItem getShoppingItem(long itemId) {
@@ -38,16 +64,6 @@ public class ShoppingItemService {
         }
         return theItem.get();
     }
-
-//    public ShoppingItem updateShoppingItem(long itemId,
-//                                           ShoppingItemDTO newItem) {
-//        ShoppingItem oldItem = this.getShoppingItem(itemId);
-//        oldItem.setName(newItem.getName());
-//        oldItem.setCategory(newItem.getCategory());
-//        oldItem.setPrice(newItem.getPrice());
-//        oldItem.setAmount(newItem.getAmount());
-//        return shoppingItemRepository.save(oldItem);
-//    }
 
     public ShoppingItem deleteShoppingItem(long itemId) {
         ShoppingItem theItem = this.getShoppingItem(itemId);

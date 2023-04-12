@@ -15,5 +15,4 @@ public class ShoppingListDTO {
 
     private String title;
     private String description;
-    private double price;
 }

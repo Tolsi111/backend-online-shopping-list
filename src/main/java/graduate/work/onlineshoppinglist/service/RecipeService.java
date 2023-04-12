@@ -19,8 +19,8 @@ public class RecipeService {
     private RecipeRepository recipeRepository;
 
     public Recipe saveRecipe(RecipeDTO theRecipe) {
-        Recipe newRecipe = new Recipe(0, theRecipe.getName(), theRecipe.getDescription(), theRecipe.getServings(), theRecipe.getTime(),
-                                      theRecipe.getLastTimeUse(), theRecipe.getIngredients());
+        Recipe newRecipe = new Recipe(0, theRecipe.getTitle(), theRecipe.getDescription(), theRecipe.getServings(), theRecipe.getTime(),
+                                      null, null);
         try {
             return recipeRepository.save(newRecipe);
         } catch (Exception e) {
@@ -44,16 +44,14 @@ public class RecipeService {
         return new Recipe(-1, "Piept de pui la gratar", "Cea mai anabolica mancare. Perfect pentru sportivi", 3, 30, null, null);
     }
 
-//    public Recipe updateRecipe(long recipeId,
-//                               RecipeDTO newRecipe) {
-//        Recipe oldRecipe = this.getRecipe(recipeId);
-//        oldRecipe.setName(newRecipe.getName());
-//        oldRecipe.setDescription(newRecipe.getDescription());
-//        oldRecipe.setPrice(newRecipe.getPrice());
-//        oldRecipe.setServings(newRecipe.getServings());
-//        oldRecipe.setTime(newRecipe.getTime());
-//        return recipeRepository.save(oldRecipe);
-//    }
+    public Recipe updateRecipe(long recipeId,
+                               RecipeDTO newRecipe) {
+        Recipe oldRecipe = this.getRecipe(recipeId);
+        oldRecipe.setTitle(newRecipe.getTitle());
+        oldRecipe.setDescription(newRecipe.getDescription());
+        oldRecipe.setServings(newRecipe.getServings());
+        return recipeRepository.save(oldRecipe);
+    }
 
     public Recipe deleteRecipe(long recipeId) {
         Recipe theRecipe = this.getRecipe(recipeId);

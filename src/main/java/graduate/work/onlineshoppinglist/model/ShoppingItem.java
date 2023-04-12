@@ -33,15 +33,17 @@ public class ShoppingItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int amount;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "shopping_list_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    //    @JoinColumn(name = "shopping_list_id", insertable = false, updatable = false)
+    @JoinColumn(name = "shopping_list_id")
     @JsonBackReference
     private ShoppingList shoppingList;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "recipe_list_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    //    @JoinColumn(name = "recipe_list_id", insertable = false, updatable = false)
+    @JoinColumn(name = "recipe_list_id")
     @JsonBackReference
     private Recipe recipe;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "item_id")
     private Item item;
 }

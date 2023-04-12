@@ -45,11 +45,11 @@ public class RecipeController {
         return new Response<>(new DataResponse<>(recipeService.getRecipeRecommendation()));
     }
 
-//    @PutMapping("/{recipeId}")
-//    public Response<Recipe> updateRecipe(@PathVariable long recipeId,
-//                               @RequestBody RecipeDTO newRecipe) {
-//        return new Response<>(new DataResponse<>(recipeService.updateRecipe(recipeId, newRecipe)));
-//    }
+    @PutMapping("/{recipeId}")
+    public Response<Recipe> updateRecipe(@PathVariable long recipeId,
+                                         @RequestBody RecipeDTO newRecipe) {
+        return new Response<>(new DataResponse<>(recipeService.updateRecipe(recipeId, newRecipe)));
+    }
 
     @DeleteMapping("/{recipeId}")
     public Response<Recipe> deleteRecipe(@PathVariable long recipeId) {

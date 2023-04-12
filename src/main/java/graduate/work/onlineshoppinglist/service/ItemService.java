@@ -34,7 +34,7 @@ public class ItemService {
     public Item getItemById(Long id) {
         Optional<Item> theItem = itemRepository.findById(id);
         if (theItem.isEmpty()) {
-            throw new CustomErrorResponse(ErrorCodes.NOT_FOUND_SHOPPING_ITEM);
+            throw new CustomErrorResponse(ErrorCodes.NOT_FOUND_ITEM);
         }
         return theItem.get();
     }
@@ -52,5 +52,9 @@ public class ItemService {
         Item theItem = this.getItemById(id);
         itemRepository.delete(theItem);
         return theItem;
+    }
+
+    public List<Item> findByName(String name) {
+        return this.itemRepository.findTop5ByNameContaining(name);
     }
 }
