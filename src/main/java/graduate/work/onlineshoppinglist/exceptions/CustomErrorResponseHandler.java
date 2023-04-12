@@ -3,9 +3,12 @@ package graduate.work.onlineshoppinglist.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import graduate.work.onlineshoppinglist.exceptions.error_handling.error.ErrorCodes;
 import graduate.work.onlineshoppinglist.exceptions.error_handling.response.CustomErrorResponse;
@@ -32,7 +35,8 @@ public class CustomErrorResponseHandler {
     public ResponseEntity<Response<String>> handleException(HttpMessageNotReadableException exc) {
         return new ResponseEntity<>(
                 new Response<>(new CustomErrorResponse(ErrorCodes.BAD_REQUEST_INVALID_PARAMETER_FORMAT,
-                                                       exc.getCause().getMessage())),
+                                                       exc.getCause()
+                                                          .getMessage())),
                 HttpStatus.OK);
     }
 
@@ -40,6 +44,20 @@ public class CustomErrorResponseHandler {
     public ResponseEntity<Response<String>> handleException(RuntimeException exc) {
         exc.printStackTrace();
         return new ResponseEntity<>(new Response<>(new CustomErrorResponse(ErrorCodes.INTERNAL_SERVER_GENERIC_ERROR)),
+                                    HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Response<String>> handleException(HttpRequestMethodNotSupportedException exc) {
+        exc.printStackTrace();
+        return new ResponseEntity<>(new Response<>(new CustomErrorResponse(ErrorCodes.HTTP_REQUEST_METHOD_NOT_SUPPORTED)),
+                                    HttpStatus.OK);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Response<String>> handleException(SQLIntegrityConstraintViolationException exc) {
+        exc.printStackTrace();
+        return new ResponseEntity<>(new Response<>(new CustomErrorResponse(ErrorCodes.SQL_INTEGRITY_CONSTRAINT_VIOLATION)),
                                     HttpStatus.OK);
     }
 }
