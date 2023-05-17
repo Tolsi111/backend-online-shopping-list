@@ -14,7 +14,7 @@ public class ErrorDetails {
 
     private String description;
 
-    private LocalDate creationDate;
+//    private LocalDate creationDate;
 
     // shows a description of the cases that the error is thrown
     private String errorContext;
@@ -23,21 +23,20 @@ public class ErrorDetails {
         this.errorName = errorCode;
         this.numericalCode = errorCode.getValue();
         this.description = description;
-        this.creationDate = LocalDate.parse("2022-05-25");
     }
 
-    public ErrorDetails(ErrorCodes errorCode, String description, LocalDate creationDate) {
-        this.errorName = errorCode;
-        this.description = description;
-        this.creationDate = creationDate;
-        this.numericalCode = errorCode.getValue();
-    }
-
-    public ErrorDetails(ErrorCodes errorCode, String description, LocalDate creationDate, String errorContext) {
-        this.errorName = errorCode;
-        this.description = description;
-        this.creationDate = creationDate;
-        this.errorContext = errorContext;
-        this.numericalCode = errorCode.getValue();
-    }
+//    public ErrorDetails(ErrorCodes errorCode, String description, LocalDate creationDate) {
+//        this.errorName = errorCode;
+//        this.description = description;
+//        this.creationDate = creationDate;
+//        this.numericalCode = errorCode.getValue();
+//    }
+//
+//    public ErrorDetails(ErrorCodes errorCode, String description, LocalDate creationDate, String errorContext) {
+//        this.errorName = errorCode;
+//        this.description = description;
+//        this.creationDate = creationDate;
+//        this.errorContext = errorContext;
+//        this.numericalCode = errorCode.getValue();
+//    }
 }
