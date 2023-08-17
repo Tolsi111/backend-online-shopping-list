@@ -32,6 +32,8 @@ public class ShoppingItemService {
             throw new CustomErrorResponse(ErrorCodes.BAD_REQUEST_NO_LIST_PROVIDED);
         } else if (shoppingItemDTO.getShoppingListId() != null) {
             shoppingList = shoppingListService.getShoppingList(shoppingItemDTO.getShoppingListId());
+            shoppingList.setPrice(shoppingList.getPrice()+shoppingItemDTO.getAmount()*itemService.getItemById(shoppingItemDTO.getItemId()).getPricePerUnit());
+            shoppingListService.saveShoppingList(shoppingList);
             recipe = null;
         } else if (shoppingItemDTO.getRecipeId() != null) {
             recipe = recipeService.getRecipe(shoppingItemDTO.getRecipeId());
@@ -53,7 +55,10 @@ public class ShoppingItemService {
     public ShoppingItem updateShoppingItemAmount(long itemId,
                                                  int amount) {
         ShoppingItem oldItem = this.getShoppingItem(itemId);
+        oldItem.getShoppingList().setPrice(oldItem.getShoppingList().getPrice() - oldItem.getAmount()*oldItem.getItem().getPricePerUnit());
         oldItem.setAmount(amount);
+        oldItem.getShoppingList().setPrice(oldItem.getShoppingList().getPrice() + oldItem.getAmount()*oldItem.getItem().getPricePerUnit());
+        shoppingListService.saveShoppingList(oldItem.getShoppingList());
         return this.shoppingItemRepository.save(oldItem);
     }
 
@@ -67,6 +72,8 @@ public class ShoppingItemService {
 
     public ShoppingItem deleteShoppingItem(long itemId) {
         ShoppingItem theItem = this.getShoppingItem(itemId);
+        theItem.getShoppingList().setPrice(theItem.getShoppingList().getPrice() - theItem.getAmount()*theItem.getItem().getPricePerUnit());
+        shoppingListService.saveShoppingList(theItem.getShoppingList());
         shoppingItemRepository.delete(theItem);
         return theItem;
     }

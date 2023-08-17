@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "shopping_list")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ShoppingList {
 
     @Id

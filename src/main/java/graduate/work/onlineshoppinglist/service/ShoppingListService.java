@@ -27,6 +27,15 @@ public class ShoppingListService {
         }
     }
 
+
+    public ShoppingList saveShoppingList(ShoppingList shoppingList) {
+        try {
+            return shoppingListRepository.save(shoppingList);
+        } catch (Exception e) {
+            throw new CustomErrorResponse(ErrorCodes.INTERNAL_SERVER_ERROR_WHILE_CREATING_RESOURCE);
+        }
+    }
+
     public List<ShoppingList> getShoppingLists() {
         return shoppingListRepository.findAll();
     }
